@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Random Grid Selector</title>
+
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/animations.css">
+  <link rel="stylesheet" href="css/layout.css">
+  <link rel="stylesheet" href="css/tabs.css">
+  <link rel="stylesheet" href="css/controls.css">
+  <link rel="stylesheet" href="css/grid.css">
+  <link rel="stylesheet" href="css/overlays.css">
+  <link rel="stylesheet" href="css/flip.css">
+  <link rel="stylesheet" href="css/squad.css">
+</head>
+<body>
+
+  <div class="vignette"></div>
+
+  <!-- Countdown overlay -->
+  <div class="countdown-overlay" id="countdown-overlay">
+    <div class="countdown-backdrop"></div>
+    <div class="countdown-number" id="countdown-number">3</div>
+  </div>
+
+  <div class="container">
+
+    <!-- Header -->
+    <div class="header">
+      <div class="header-eyebrow">System v2.0</div>
+      <h1 data-text="Random Grid Selector">Random <span>Grid</span> Selector</h1>
+      <div class="header-line"></div>
+    </div>
+
+    <!-- Mode Tab Switcher -->
+    <div class="mode-tabs" id="mode-tabs">
+      <!-- Sliding indicator — positioned by switchMode() -->
+      <div class="tab-indicator mode-scanner" id="tab-indicator"></div>
+
+      <button class="tab-btn active" data-mode="scanner" onclick="switchMode('scanner')">
+        <span class="tab-icon">⚡</span>
+        Grid Scanner
+      </button>
+      <button class="tab-btn" data-mode="flip" onclick="switchMode('flip')">
+        <span class="tab-icon">🂠</span>
+        Flip Your Fate
+      </button>
+      <button class="tab-btn" data-mode="squad" onclick="switchMode('squad')">
+        <span class="tab-icon">⚔</span>
+        Squad Builder
+      </button>
+    </div>
+
+    <!-- ── SCANNER MODE ── -->
+    <div class="mode-panel active" data-panel="scanner">
+
+      <div class="controls">
+        <div class="input-group">
+          <div class="input-label">Cell Count</div>
+          <input id="count" type="number" placeholder="0" min="1" max="100">
+        </div>
+        <div class="input-group">
+          <div class="input-label">Winners</div>
+          <input id="winners" type="number" placeholder="1" min="1" max="100" value="1">
+        </div>
+        <div class="speed-group" id="speed-group">
+          <div class="speed-header">
+            <div class="input-label">Speed</div>
+            <div class="speed-val" id="speed-val">5</div>
+          </div>
+          <input type="range" id="speed" min="1" max="10" value="5" oninput="updateSpeedLabel()">
+          <div class="speed-lock-notice" id="speed-lock-notice">LOCKED DURING SCAN</div>
+        </div>
+        <div class="btn-group">
+          <button class="btn-create" onclick="createGrid()">Build</button>
+          <button class="btn-start" onclick="startAnimation()">Initiate</button>
+          <button class="btn-reset" id="btn-reset" onclick="resetGrid()">Reset</button>
+        </div>
+      </div>
+
+      <button class="btn-clear-pin" id="btn-clear-pin" onclick="clearPin()">
+        <span class="pin-icon">📌</span> Clear Pin
+      </button>
+
+      <div class="status-bar" id="status">AWAITING INPUT</div>
+
+      <div class="winner-banner" id="winner-banner">
+        <div class="winner-label" id="winner-label">Selected</div>
+        <div class="winner-number" id="winner-num"></div>
+      </div>
+
+      <div class="cell-legend" id="cell-legend" style="display:none">
+        <div class="legend-item">
+          <div class="legend-dot pin"></div> Click = Pin (force win)
+        </div>
+        <div class="legend-item">
+          <div class="legend-dot excl"></div> Click pinned = Unpin
+        </div>
+      </div>
+
+      <div class="grid-wrapper">
+        <span class="corner corner-tl"></span>
+        <span class="corner corner-tr"></span>
+        <span class="corner corner-bl"></span>
+        <span class="corner corner-br"></span>
+        <span class="bracket-label bracket-label-tl">Selection Zone</span>
+        <span class="bracket-label bracket-label-br">RGS-2.0</span>
+        <div id="grid"></div>
+      </div>
+
+      <div class="history-panel" id="history-panel" style="display:none">
+        <div class="history-empty" id="history-empty">No rounds yet</div>
+        <ul class="history-list" id="history-list"></ul>
+      </div>
+
+    </div><!-- /scanner -->
+
+    <!-- ── FLIP YOUR FATE MODE ── -->
+    <div class="mode-panel" data-panel="flip">
+
+      <div class="flip-controls">
+        <div class="input-group">
+          <div class="input-label">Card Count</div>
+          <input id="flip-count" type="number" placeholder="0" min="1" max="52">
+        </div>
+        <div class="input-group">
+          <div class="input-label">Winners</div>
+          <input id="flip-winners" type="number" placeholder="1" min="1" max="52" value="1">
+        </div>
+        <div class="btn-group">
+          <button class="btn-create" onclick="dealCards()">Deal</button>
+          <button class="btn-flip-reset" id="btn-flip-reset" onclick="resetFlip()">Reset</button>
+        </div>
+      </div>
+
+      <div class="flip-status-bar" id="flip-status">AWAITING INPUT</div>
+      <div class="flip-picks-counter" id="flip-picks-counter"></div>
+
+      <div class="flip-winner-banner" id="flip-winner-banner">
+        <div class="flip-winner-label" id="flip-winner-label">Your Pick</div>
+        <div class="flip-winner-number" id="flip-winner-num"></div>
+      </div>
+
+      <div class="card-wrapper">
+        <span class="corner corner-tl"></span>
+        <span class="corner corner-tr"></span>
+        <span class="corner corner-bl"></span>
+        <span class="corner corner-br"></span>
+        <span class="bracket-label bracket-label-tl">Fate Zone</span>
+        <span class="bracket-label bracket-label-br">FYF-1.0</span>
+        <div class="card-grid" id="card-grid"></div>
+      </div>
+
+      <div class="history-panel" id="flip-history-panel" style="display:none">
+        <div class="history-empty" id="flip-history-empty">No rounds yet</div>
+        <ul class="history-list" id="flip-history-list"></ul>
+      </div>
+
+    </div><!-- /flip -->
+
+    <!-- ── SQUAD BUILDER MODE ── -->
+    <div class="mode-panel" data-panel="squad">
+
+      <div class="squad-controls">
+
+        <!-- Input mode toggle -->
+        <div class="squad-input-toggle">
+          <button class="squad-toggle-btn active" id="squad-toggle-number"
+            onclick="setSquadInputMode('number')">123 Numbers</button>
+          <button class="squad-toggle-btn" id="squad-toggle-names"
+            onclick="setSquadInputMode('names')">Aa Names</button>
+        </div>
+
+        <!-- Number mode inputs -->
+        <div class="squad-input-panel" id="squad-number-inputs">
+          <div class="input-group">
+            <div class="input-label">No. of Squads</div>
+            <input id="squad-groups" type="number" placeholder="2" min="2" max="20" value="2">
+          </div>
+          <div class="input-group">
+            <div class="input-label">Members / Squad</div>
+            <input id="squad-members" type="number" placeholder="3" min="1" max="50" value="3">
+          </div>
+        </div>
+
+        <!-- Names mode inputs -->
+        <div class="squad-input-panel" id="squad-names-inputs" style="display:none">
+          <div class="squad-names-group">
+            <div class="input-label">Names (one per line)</div>
+            <textarea
+              id="squad-names-input"
+              class="squad-names-textarea"
+              placeholder="Alice&#10;Bob&#10;Charlie&#10;Dana&#10;..."
+              oninput="updateNamesCount()"
+            ></textarea>
+            <div class="names-count" id="names-count">—</div>
+          </div>
+          <div class="input-group">
+            <div class="input-label">No. of Squads</div>
+            <input id="squad-groups-names" type="number" placeholder="2" min="2" max="20" value="2">
+          </div>
+        </div>
+
+        <!-- Action buttons -->
+        <div class="btn-group">
+          <button class="btn-squad-generate" id="btn-squad-generate" onclick="generateSquads()">Generate</button>
+          <button class="btn-squad-reset" id="btn-squad-reset" onclick="resetSquads()">Reset</button>
+        </div>
+
+      </div>
+
+      <div class="squad-status-bar" id="squad-status">AWAITING INPUT</div>
+      <div class="squad-summary" id="squad-summary"></div>
+      <div class="groups-area" id="groups-area"></div>
+
+      <div class="history-panel" id="squad-history-panel" style="display:none">
+        <div class="history-empty" id="squad-history-empty">No rounds yet</div>
+        <ul class="history-list" id="squad-history-list"></ul>
+      </div>
+
+    </div><!-- /squad -->
+
+    <div class="footer">Randomized Selection Engine</div>
+
+  </div><!-- /.container -->
+
+  <script src="js/state.js"></script>
+  <script src="js/ui.js"></script>
+  <script src="js/grid.js"></script>
+  <script src="js/history.js"></script>
+  <script src="js/countdown.js"></script>
+  <script src="js/animation.js"></script>
+  <script src="js/flip.js"></script>
+  <script src="js/squad.js"></script>
+
+</body>
+</html>

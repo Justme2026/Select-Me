@@ -1,0 +1,95 @@
+/* ============================================================
+   ANIMATIONS — All @keyframes definitions
+   ============================================================ */
+
+/* Title glitch */
+@keyframes glitch {
+  0%, 90%, 100% { transform: none; }
+  91%  { transform: skewX(-1deg) translateX(2px); }
+  92%  { transform: skewX(1deg) translateX(-2px); }
+  93%  { transform: none; }
+  95%  { transform: skewX(-0.5deg) translateX(1px); }
+  96%  { transform: none; }
+}
+
+@keyframes glitch-top {
+  0%, 90%, 100% { opacity: 0; transform: none; }
+  91% { opacity: 1; transform: translateX(-4px); }
+  92% { opacity: 1; transform: translateX(4px); }
+  93% { opacity: 0; }
+}
+
+@keyframes glitch-bot {
+  0%, 91%, 100% { opacity: 0; transform: none; }
+  92% { opacity: 1; transform: translateX(4px); }
+  93% { opacity: 1; transform: translateX(-4px); }
+  94% { opacity: 0; }
+}
+
+/* Input shake on error */
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  15%  { transform: translateX(-6px); }
+  30%  { transform: translateX(6px); }
+  45%  { transform: translateX(-4px); }
+  60%  { transform: translateX(4px); }
+  75%  { transform: translateX(-2px); }
+  90%  { transform: translateX(2px); }
+}
+
+/* Cell entering grid */
+@keyframes cell-in {
+  from { opacity: 0; transform: scale(0.7); }
+  to   { opacity: 1; transform: scale(1); }
+}
+
+.cell.reveal {
+  animation: cell-in 0.3s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+}
+
+/* Active cell sweep */
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* Winner cell pulse */
+@keyframes winner-pulse {
+  from {
+    box-shadow:
+      0 0 30px rgba(255,216,77,0.5),
+      0 0 60px rgba(255,216,77,0.2),
+      inset 0 0 30px rgba(255,216,77,0.05);
+  }
+  to {
+    box-shadow:
+      0 0 50px rgba(255,216,77,0.8),
+      0 0 100px rgba(255,216,77,0.3),
+      inset 0 0 40px rgba(255,216,77,0.1);
+  }
+}
+
+/* Winner ring expand */
+@keyframes winner-ring {
+  0%, 100% { transform: scale(1);    opacity: 1; }
+  50%       { transform: scale(1.08); opacity: 0; }
+}
+
+/* Countdown number */
+@keyframes countdown-pop {
+  0%   { transform: scale(1.4); opacity: 0; }
+  20%  { transform: scale(1);   opacity: 1; }
+  70%  { transform: scale(1);   opacity: 1; }
+  100% { transform: scale(0.6); opacity: 0; }
+}
+
+/* Winner banner entrance */
+@keyframes banner-in {
+  from { opacity: 0; transform: translateY(10px) scale(0.9); }
+  to   { opacity: 1; transform: none; }
+}
+
+/* History item entrance */
+@keyframes history-slide {
+  from { opacity: 0; transform: translateX(-8px); }
+  to   { opacity: 1; transform: none; }
+}

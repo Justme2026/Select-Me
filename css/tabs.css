@@ -1,0 +1,100 @@
+/* ============================================================
+   TABS — Mode switcher: Grid Scanner / Flip Your Fate / Squad Builder
+   ============================================================ */
+
+.mode-tabs {
+  display: flex;
+  gap: 0;
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 4px;
+  position: relative;
+  box-shadow: 0 0 30px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.04);
+  width: 100%;
+  max-width: 600px;
+}
+
+/* Sliding active indicator — positioned via JS */
+.tab-indicator {
+  position: absolute;
+  top: 4px;
+  bottom: 4px;
+  width: calc(33.333% - 3px);
+  left: 4px;
+  border-radius: 8px;
+  pointer-events: none;
+  transition: left 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+              background 0.3s ease,
+              border-color 0.3s ease,
+              box-shadow 0.3s ease;
+
+  /* Default: scanner (neon) */
+  background: rgba(0,255,231,0.07);
+  border: 1px solid var(--neon);
+  box-shadow: 0 0 16px rgba(0,255,231,0.15);
+}
+
+/* Flip color */
+.tab-indicator.mode-flip {
+  background: rgba(255,216,77,0.06);
+  border-color: var(--gold);
+  box-shadow: 0 0 16px rgba(255,216,77,0.15);
+}
+
+/* Squad color */
+.tab-indicator.mode-squad {
+  background: rgba(255,46,248,0.06);
+  border-color: var(--neon2);
+  box-shadow: 0 0 16px rgba(255,46,248,0.15);
+}
+
+.tab-btn {
+  flex: 1;
+  background: transparent;
+  border: none;
+  border-radius: 8px;
+  padding: 10px 12px;
+  font-family: 'Orbitron', sans-serif;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--text);
+  opacity: 0.35;
+  cursor: pointer;
+  transition: opacity 0.25s, color 0.25s;
+  position: relative;
+  z-index: 1;
+  white-space: nowrap;
+}
+
+.tab-btn::after { display: none; }
+
+.tab-btn.active {
+  opacity: 1;
+}
+
+.tab-btn[data-mode="scanner"].active { color: var(--neon); }
+.tab-btn[data-mode="flip"].active    { color: var(--gold); }
+.tab-btn[data-mode="squad"].active   { color: var(--neon2); }
+
+.tab-btn .tab-icon {
+  display: block;
+  font-size: 14px;
+  margin-bottom: 3px;
+  line-height: 1;
+}
+
+/* ---- Mode panels ---- */
+.mode-panel {
+  display: none;
+  flex-direction: column;
+  align-items: center;
+  gap: 32px;
+  width: 100%;
+}
+
+.mode-panel.active {
+  display: flex;
+}

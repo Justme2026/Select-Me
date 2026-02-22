@@ -1,0 +1,181 @@
+/* ============================================================
+   GRID — Wrapper, corner brackets, cell base + all states
+   ============================================================ */
+
+/* ---- Grid wrapper & corner brackets ---- */
+.grid-wrapper {
+  position: relative;
+  padding: 28px;
+}
+
+.corner {
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  border-color: var(--neon);
+  border-style: solid;
+  opacity: 0.6;
+  transition: opacity 0.3s;
+}
+
+.grid-wrapper:hover .corner { opacity: 1; }
+
+.corner-tl { top: 0; left: 0;   border-width: 2px 0 0 2px; }
+.corner-tr { top: 0; right: 0;  border-width: 2px 2px 0 0; }
+.corner-bl { bottom: 0; left: 0;  border-width: 0 0 2px 2px; }
+.corner-br { bottom: 0; right: 0; border-width: 0 2px 2px 0; }
+
+/* Short extension ticks from each corner */
+.corner::before, .corner::after {
+  content: '';
+  position: absolute;
+  background: var(--neon);
+  opacity: 0.25;
+}
+
+.corner-tl::before { top: -1px;    left: 18px;   width: 12px; height: 1px; }
+.corner-tl::after  { top: 18px;    left: -1px;   width: 1px;  height: 12px; }
+.corner-tr::before { top: -1px;    right: 18px;  width: 12px; height: 1px; }
+.corner-tr::after  { top: 18px;    right: -1px;  width: 1px;  height: 12px; }
+.corner-bl::before { bottom: -1px; left: 18px;   width: 12px; height: 1px; }
+.corner-bl::after  { bottom: 18px; left: -1px;   width: 1px;  height: 12px; }
+.corner-br::before { bottom: -1px; right: 18px;  width: 12px; height: 1px; }
+.corner-br::after  { bottom: 18px; right: -1px;  width: 1px;  height: 12px; }
+
+/* HUD label badges at corners */
+.bracket-label {
+  position: absolute;
+  font-size: 9px;
+  letter-spacing: 3px;
+  color: var(--neon);
+  opacity: 0.35;
+  text-transform: uppercase;
+}
+
+.bracket-label-tl { top: 4px;    left: 28px;  }
+.bracket-label-br { bottom: 4px; right: 28px; }
+
+/* ---- Grid ---- */
+#grid {
+  display: grid;
+  gap: 10px;
+  justify-content: center;
+}
+
+/* ---- Cell base ---- */
+.cell {
+  width: 90px;
+  height: 90px;
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Orbitron', sans-serif;
+  font-size: 18px;
+  font-weight: 700;
+  color: #3a4a6a;
+  position: relative;
+  overflow: hidden;
+  transition: all 0.15s ease;
+  cursor: pointer;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+.cell::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(255,255,255,0.03), transparent);
+  pointer-events: none;
+}
+
+/* ---- Reshuffle flash ---- */
+.cell.reshuffling {
+  color: transparent;
+  border-color: var(--neon);
+  box-shadow: 0 0 10px rgba(0,255,231,0.2);
+  transition: color 0.1s, border-color 0.1s;
+}
+
+/* ---- Active (scanning) ---- */
+.cell.active {
+  border-color: var(--neon);
+  color: var(--neon);
+  background: rgba(0,255,231,0.06);
+  box-shadow:
+    0 0 20px rgba(0,255,231,0.4),
+    inset 0 0 20px rgba(0,255,231,0.06);
+  transform: scale(1.05);
+}
+
+.cell.active::after {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: conic-gradient(transparent 0deg, rgba(0,255,231,0.15) 60deg, transparent 120deg);
+  animation: spin 0.8s linear infinite;
+}
+
+/* ---- Pinned (forced winner) ---- */
+.cell.pinned {
+  border-color: var(--neon2);
+  color: var(--neon2);
+  background: rgba(255,46,248,0.08);
+  box-shadow: 0 0 16px rgba(255,46,248,0.35), inset 0 0 12px rgba(255,46,248,0.06);
+}
+
+.cell.pinned::after {
+  content: '📌';
+  position: absolute;
+  top: 4px;
+  right: 6px;
+  font-size: 10px;
+  opacity: 0.8;
+}
+
+/* ---- Excluded ---- */
+.cell.excluded {
+  opacity: 0.25;
+  border-color: #333;
+  color: #444;
+  background: rgba(0,0,0,0.3);
+  text-decoration: line-through;
+  text-decoration-color: #555;
+}
+
+.cell.excluded::after {
+  content: '✕';
+  position: absolute;
+  top: 4px;
+  right: 7px;
+  font-size: 10px;
+  color: #555;
+}
+
+/* ---- Selected (winner) ---- */
+.cell.selected {
+  border-color: var(--gold);
+  color: var(--gold);
+  background: rgba(255,216,77,0.08);
+  box-shadow:
+    0 0 30px rgba(255,216,77,0.5),
+    0 0 60px rgba(255,216,77,0.2),
+    inset 0 0 30px rgba(255,216,77,0.05);
+  transform: scale(1.12);
+  animation: winner-pulse 1s ease-in-out infinite alternate;
+}
+
+.cell.selected::after {
+  content: '';
+  position: absolute;
+  inset: -1px;
+  border-radius: 12px;
+  border: 1px solid var(--gold);
+  animation: winner-ring 1s ease-in-out infinite;
+}

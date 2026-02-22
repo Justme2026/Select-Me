@@ -1,0 +1,301 @@
+/* ============================================================
+   CONTROLS — Config panel, inputs, buttons, speed slider, legend
+   ============================================================ */
+
+/* ---- Config panel ---- */
+.controls {
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 24px 32px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+  justify-content: center;
+  position: relative;
+  box-shadow: 0 0 40px rgba(0,0,0,0.5), inset 0 1px 0 rgba(255,255,255,0.05);
+}
+
+.controls::before {
+  content: 'CONFIG';
+  position: absolute;
+  top: -10px;
+  left: 24px;
+  background: var(--panel);
+  padding: 0 10px;
+  font-size: 10px;
+  letter-spacing: 4px;
+  color: var(--neon);
+  opacity: 0.6;
+}
+
+/* ---- Input groups ---- */
+.input-group {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.input-label {
+  font-size: 10px;
+  letter-spacing: 3px;
+  color: var(--neon);
+  opacity: 0.6;
+  text-transform: uppercase;
+}
+
+/* Number inputs */
+input[type="number"] {
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  color: var(--neon);
+  font-family: 'Orbitron', sans-serif;
+  font-size: 20px;
+  font-weight: 700;
+  padding: 10px 16px;
+  width: 120px;
+  text-align: center;
+  outline: none;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+input[type="number"]:focus {
+  border-color: var(--neon);
+  box-shadow: 0 0 12px rgba(0,255,231,0.3);
+}
+
+input[type="number"]::-webkit-inner-spin-button { opacity: 0; }
+
+input[type="number"].error {
+  border-color: var(--red) !important;
+  box-shadow: 0 0 14px rgba(255,107,107,0.5) !important;
+  animation: shake 0.45s ease;
+}
+
+/* ---- Button group ---- */
+.btn-group {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+button {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  padding: 12px 24px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  transition: all 0.2s;
+}
+
+button::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(255,255,255,0.1), transparent);
+  pointer-events: none;
+}
+
+.btn-create {
+  background: transparent;
+  color: var(--neon);
+  border: 1px solid var(--neon);
+  box-shadow: 0 0 12px rgba(0,255,231,0.15), inset 0 0 12px rgba(0,255,231,0.05);
+}
+
+.btn-create:hover {
+  background: rgba(0,255,231,0.1);
+  box-shadow: 0 0 20px rgba(0,255,231,0.3);
+  transform: translateY(-1px);
+}
+
+.btn-start {
+  background: var(--neon);
+  color: #060a10;
+  box-shadow: 0 0 20px rgba(0,255,231,0.4);
+}
+
+.btn-start:hover {
+  box-shadow: 0 0 30px rgba(0,255,231,0.6);
+  transform: translateY(-1px);
+}
+
+.btn-start:active { transform: scale(0.97); }
+
+/* Initiate button — disabled during scan */
+.btn-start.disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+  pointer-events: none;
+  box-shadow: none;
+}
+
+.btn-reset {
+  background: transparent;
+  color: var(--red);
+  border: 1px solid var(--red);
+  box-shadow: 0 0 12px rgba(255,107,107,0.1), inset 0 0 12px rgba(255,107,107,0.04);
+  opacity: 0.4;
+  pointer-events: none;
+  transition: all 0.2s, opacity 0.3s;
+}
+
+.btn-reset.enabled {
+  opacity: 1;
+  pointer-events: all;
+}
+
+.btn-reset.enabled:hover {
+  background: rgba(255,107,107,0.1);
+  box-shadow: 0 0 20px rgba(255,107,107,0.3);
+  transform: translateY(-1px);
+}
+
+/* Speed locked during scan */
+.speed-group.locked input[type="range"] {
+  opacity: 0.3;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+.speed-group.locked .input-label {
+  opacity: 0.35;
+}
+
+.speed-lock-notice {
+  display: none;
+  font-size: 9px;
+  letter-spacing: 2px;
+  color: var(--red);
+  opacity: 0.7;
+  text-transform: uppercase;
+  text-align: center;
+  margin-top: 2px;
+  white-space: nowrap;
+}
+
+/* Clear Pin button — appears contextually when a cell is pinned */
+.btn-clear-pin {
+  display: none;
+  align-items: center;
+  gap: 6px;
+  background: transparent;
+  color: var(--neon2);
+  border: 1px solid var(--neon2);
+  font-size: 10px;
+  padding: 6px 14px;
+  letter-spacing: 2px;
+  box-shadow: 0 0 10px rgba(255,46,248,0.1), inset 0 0 8px rgba(255,46,248,0.04);
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.btn-clear-pin:hover {
+  background: rgba(255,46,248,0.1);
+  box-shadow: 0 0 18px rgba(255,46,248,0.3);
+  transform: translateY(-1px);
+}
+
+.btn-clear-pin .pin-icon {
+  font-size: 11px;
+}
+
+/* ---- Speed slider ---- */
+.speed-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  align-items: center;
+  min-width: 140px;
+}
+
+.speed-header {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  align-items: center;
+}
+
+.speed-val {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 11px;
+  color: var(--neon);
+  font-weight: 700;
+  min-width: 30px;
+  text-align: right;
+}
+
+input[type="range"] {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 100%;
+  height: 4px;
+  background: var(--border);
+  border-radius: 2px;
+  outline: none;
+  cursor: pointer;
+}
+
+input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: var(--neon);
+  box-shadow: 0 0 8px rgba(0,255,231,0.6);
+  cursor: pointer;
+  transition: box-shadow 0.15s;
+}
+
+input[type="range"]::-webkit-slider-thumb:hover {
+  box-shadow: 0 0 14px rgba(0,255,231,0.9);
+}
+
+input[type="range"]::-moz-range-thumb {
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: var(--neon);
+  box-shadow: 0 0 8px rgba(0,255,231,0.6);
+  cursor: pointer;
+  border: none;
+}
+
+/* ---- Cell interaction legend ---- */
+.cell-legend {
+  display: flex;
+  gap: 20px;
+  font-size: 10px;
+  letter-spacing: 2px;
+  opacity: 0.45;
+  text-transform: uppercase;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.legend-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 2px;
+  flex-shrink: 0;
+}
+
+.legend-dot.pin  { background: var(--neon2); }
+.legend-dot.excl { background: #444; }
