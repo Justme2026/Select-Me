@@ -9,5 +9,5 @@ const State = {
   pinnedCell:  null,  // Index of pinned cell, or null
   roundCount:  0,     // Cumulative completed rounds (for history log)
   isRunning:   false, // True while countdown or scan is active
-  activeMode:  'scanner', // 'scanner' | 'flip'
+  activeMode:  'scanner', // 'scanner' | 'flip' | 'squad' | 'coin'
 };

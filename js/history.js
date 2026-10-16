@@ -12,15 +12,16 @@ const MAX_HISTORY = 5;
  * @param {string} winnerNums - Formatted winner cell numbers, e.g. "3 · 7 · 12"
  * @param {number} cellTotal  - Total cells/cards in the round
  */
-function logHistory(winnerNums, cellTotal) {
+function logHistory(winnerNums, cellTotal, mode = State.activeMode) {
   State.roundCount++;
 
-  const isFlip  = State.activeMode === 'flip';
-  const isSquad = State.activeMode === 'squad';
+  const isFlip  = mode === 'flip';
+  const isSquad = mode === 'squad';
+  const isCoin  = mode === 'coin';
 
-  const panelId = isFlip ? 'flip-history-panel' : isSquad ? 'squad-history-panel' : 'history-panel';
-  const listId  = isFlip ? 'flip-history-list'  : isSquad ? 'squad-history-list'  : 'history-list';
-  const emptyId = isFlip ? 'flip-history-empty' : isSquad ? 'squad-history-empty' : 'history-empty';
+  const panelId = isCoin ? 'coin-history-panel' : isFlip ? 'flip-history-panel' : isSquad ? 'squad-history-panel' : 'history-panel';
+  const listId  = isCoin ? 'coin-history-list' : isFlip ? 'flip-history-list' : isSquad ? 'squad-history-list' : 'history-list';
+  const emptyId = isCoin ? 'coin-history-empty' : isFlip ? 'flip-history-empty' : isSquad ? 'squad-history-empty' : 'history-empty';
 
   const panel = document.getElementById(panelId);
   const list  = document.getElementById(listId);
@@ -42,13 +43,14 @@ function logHistory(winnerNums, cellTotal) {
     hour: '2-digit', minute: '2-digit', second: '2-digit'
   });
 
-  const unitLabel = isFlip ? 'cards' : isSquad ? 'members' : 'cells';
+  const unitLabel = isCoin ? 'choices' : isFlip ? 'cards' : isSquad ? 'members' : 'cells';
 
   li.innerHTML = `
     <span class="history-round">R${State.roundCount}</span>
-    <span class="history-winners">${winnerNums}</span>
+    <span class="history-winners"></span>
     <span class="history-meta">${cellTotal} ${unitLabel} · ${time}</span>
   `;
+  li.querySelector('.history-winners').textContent = winnerNums;
 
   list.prepend(li);
 }

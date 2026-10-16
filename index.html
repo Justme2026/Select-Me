@@ -16,6 +16,7 @@
   <link rel="stylesheet" href="css/overlays.css">
   <link rel="stylesheet" href="css/flip.css">
   <link rel="stylesheet" href="css/squad.css">
+  <link rel="stylesheet" href="css/coin.css">
 </head>
 <body>
 
@@ -52,6 +53,10 @@
       <button class="tab-btn" data-mode="squad" onclick="switchMode('squad')">
         <span class="tab-icon">⚔</span>
         Squad Builder
+      </button>
+      <button class="tab-btn" data-mode="coin" onclick="switchMode('coin')">
+        <span class="tab-icon">◉</span>
+        Tech Toss
       </button>
     </div>
 
@@ -224,6 +229,66 @@
 
     </div><!-- /squad -->
 
+    <!-- Tech Toss: two editable choices, represented by hardware and code. -->
+    <div class="mode-panel" data-panel="coin">
+      <div class="coin-intro">
+        <div class="header-eyebrow">One coin. Two futures.</div>
+        <h2>Tech Toss</h2>
+        <p>Hardware or software. Give each side a choice, then launch.</p>
+      </div>
+
+      <div class="coin-controls">
+        <div class="input-group">
+          <label class="input-label" for="coin-choice-one">01 / Hardware</label>
+          <input id="coin-choice-one" type="text" maxlength="60" value="Hardware" autocomplete="off">
+        </div>
+        <div class="input-group">
+          <label class="input-label" for="coin-choice-two">02 / Software</label>
+          <input id="coin-choice-two" type="text" maxlength="60" value="Software" autocomplete="off">
+        </div>
+      </div>
+
+      <div class="coin-stage" id="coin-stage" aria-hidden="true">
+        <div class="coin-orbit"></div>
+        <div class="coin-lift">
+          <div class="tech-coin" id="tech-coin">
+            <div class="coin-face coin-hardware">
+              <span class="coin-face-id">01 / HARDWARE</span>
+              <svg viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-width="3">
+                <rect x="27" y="27" width="46" height="46" rx="5"/>
+                <rect x="38" y="38" width="24" height="24" rx="2"/>
+                <path d="M38 14v13m12-13v13m12-13v13M38 73v13m12-13v13m12-13v13M14 38h13M14 50h13M14 62h13m46-24h13M73 50h13M73 62h13"/>
+              </svg>
+              <span class="coin-face-name" id="coin-face-one">Hardware</span>
+            </div>
+            <div class="coin-face coin-software">
+              <span class="coin-face-id">02 / SOFTWARE</span>
+              <svg viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M33 32 15 50l18 18m34-36 18 18-18 18M58 23 42 77"/>
+              </svg>
+              <span class="coin-face-name" id="coin-face-two">Software</span>
+            </div>
+          </div>
+        </div>
+        <div class="coin-shadow"></div>
+        <div class="coin-impact"></div>
+      </div>
+
+      <div class="coin-status" id="coin-status" role="status" aria-live="polite">READY TO LAUNCH</div>
+      <div class="coin-result" id="coin-result" hidden aria-live="polite">
+        <div class="input-label">Selected / Hardware</div>
+        <div id="coin-result-name"></div>
+      </div>
+      <div class="btn-group">
+        <button class="btn-coin-launch" id="btn-coin-launch" onclick="launchCoin()">Launch Coin</button>
+        <button class="btn-coin-reset" onclick="resetCoin()">Reset</button>
+      </div>
+      <div class="history-panel" id="coin-history-panel" style="display:none">
+        <div class="history-empty" id="coin-history-empty">No rounds yet</div>
+        <ul class="history-list" id="coin-history-list"></ul>
+      </div>
+    </div>
+
     <div class="footer">Randomized Selection Engine</div>
 
   </div><!-- /.container -->
@@ -236,6 +301,7 @@
   <script src="js/animation.js"></script>
   <script src="js/flip.js"></script>
   <script src="js/squad.js"></script>
+  <script src="js/coin.js"></script>
 
 </body>
 </html>

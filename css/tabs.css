@@ -12,7 +12,7 @@
   position: relative;
   box-shadow: 0 0 30px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.04);
   width: 100%;
-  max-width: 600px;
+  max-width: 760px;
 }
 
 /* Sliding active indicator — positioned via JS */
@@ -20,7 +20,7 @@
   position: absolute;
   top: 4px;
   bottom: 4px;
-  width: calc(33.333% - 3px);
+  width: calc((100% - 8px) / 4);
   left: 4px;
   border-radius: 8px;
   pointer-events: none;
@@ -78,6 +78,16 @@
 .tab-btn[data-mode="scanner"].active { color: var(--neon); }
 .tab-btn[data-mode="flip"].active    { color: var(--gold); }
 .tab-btn[data-mode="squad"].active   { color: var(--neon2); }
+.tab-btn[data-mode="coin"].active { color: #8eaaff; }
+.tab-indicator.mode-coin {
+  background: rgba(142,170,255,0.08);
+  border-color: #8eaaff;
+  box-shadow: 0 0 16px rgba(142,170,255,0.2);
+}
+
+@media (max-width: 600px) {
+  .tab-btn { padding: 10px 3px; font-size: 8px; letter-spacing: 0; white-space: normal; min-width: 0; }
+}
 
 .tab-btn .tab-icon {
   display: block;

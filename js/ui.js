@@ -3,15 +3,14 @@
    ============================================================ */
 
 /**
- * Switch between 'scanner', 'flip', and 'squad' modes.
+ * Switch between scanner, flip, squad, and coin modes.
  * Moves the sliding indicator, updates tab states, swaps panels.
- * @param {string} mode - 'scanner' | 'flip' | 'squad'
+ * @param {string} mode - 'scanner' | 'flip' | 'squad' | 'coin'
  */
 function switchMode(mode) {
   if (State.activeMode === mode) return;
   State.activeMode = mode;
 
-  const tabsEl    = document.getElementById('mode-tabs');
   const indicator = document.getElementById('tab-indicator');
   const tabBtns   = document.querySelectorAll('.tab-btn');
   const panels    = document.querySelectorAll('.mode-panel');
@@ -21,13 +20,9 @@ function switchMode(mode) {
     btn.classList.toggle('active', btn.dataset.mode === mode);
   });
 
-  // Slide indicator to correct position (0, 1, or 2)
-  const positions = { scanner: 0, flip: 1, squad: 2 };
-  const idx       = positions[mode] ?? 0;
-  const tabWidth  = tabsEl.clientWidth;
-  const slotWidth = tabWidth / 3;
-  const left      = 4 + idx * slotWidth;
-  indicator.style.left = `${left}px`;
+  // Percentage positioning stays aligned when the viewport changes.
+  const idx = Array.from(tabBtns).findIndex(btn => btn.dataset.mode === mode);
+  indicator.style.left = `calc(4px + (100% - 8px) * ${Math.max(0, idx)} / ${tabBtns.length})`;
 
   // Update indicator color class
   indicator.className = `tab-indicator mode-${mode}`;

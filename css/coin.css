@@ -1,0 +1,66 @@
+/* Tech Toss — a circuit-etched, two-sided coin. */
+[data-panel="coin"] { --coin-color: #8eaaff; gap: 24px; }
+.coin-intro { text-align: center; }
+.coin-intro h2 { font: 900 clamp(24px, 5vw, 36px) 'Orbitron', sans-serif; color: #fff; margin-bottom: 12px; }
+.coin-intro p { color: var(--text); font-size: 13px; line-height: 1.6; }
+.coin-controls { display: flex; flex-wrap: wrap; justify-content: center; gap: 20px; width: 100%; max-width: 600px; padding: 24px; border: 1px solid var(--border); border-radius: 16px; background: var(--panel); }
+.coin-controls .input-group { flex: 1 1 200px; min-width: 0; }
+.coin-controls .input-label { color: var(--coin-color); opacity: 1; letter-spacing: 2px; }
+.coin-controls input { width: 100%; min-width: 0; padding: 12px; background: var(--bg); color: #fff; border: 1px solid var(--border); border-radius: 8px; font: 16px 'Share Tech Mono', monospace; }
+.coin-controls input:focus-visible { outline: 2px solid var(--coin-color); outline-offset: 3px; }
+.coin-controls input:disabled { opacity: 0.6; }
+.coin-stage { position: relative; width: min(100%, 400px); height: 330px; display: grid; place-items: center; perspective: 1100px; }
+.coin-orbit { position: absolute; width: 280px; height: 280px; max-width: 90%; border: 1px dashed #8eaaff40; border-radius: 50%; transform: rotateX(60deg); }
+.coin-lift { width: 190px; height: 190px; transform-style: preserve-3d; z-index: 1; }
+.tech-coin { position: relative; width: 100%; height: 100%; transform-style: preserve-3d; transform: rotateY(0deg); }
+.coin-face { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 9px; padding: 22px; border-radius: 50%; border: 7px double currentColor; backface-visibility: hidden; -webkit-backface-visibility: hidden; box-shadow: 0 0 35px #8eaaff33, inset 0 0 24px #8eaaff33; background: repeating-linear-gradient(45deg, transparent 0 12px, #8eaaff0c 12px 13px), #111a30; color: var(--coin-color); }
+.coin-hardware { transform: translateZ(5px); }
+.coin-software { transform: rotateY(180deg) translateZ(5px); color: var(--neon2); background-color: #24112f; }
+.coin-face svg { width: 76px; height: 76px; flex-shrink: 0; }
+.coin-face-id { font-size: 9px; letter-spacing: 2px; }
+.coin-face-name { font: 700 12px 'Orbitron', sans-serif; max-width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.coin-shadow { position: absolute; bottom: 32px; width: 135px; height: 15px; background: #8eaaff55; filter: blur(10px); border-radius: 50%; }
+.coin-impact { position: absolute; width: 190px; height: 190px; border: 2px solid var(--coin-color); border-radius: 50%; opacity: 0; pointer-events: none; }
+.coin-status { text-align: center; color: var(--coin-color); font-size: 11px; letter-spacing: 2px; min-height: 28px; line-height: 1.6; }
+.coin-result { text-align: center; max-width: 100%; animation: banner-in 0.5s ease both; }
+.coin-result .input-label { color: var(--coin-color); opacity: 1; }
+#coin-result-name { font: 900 clamp(24px, 5vw, 42px) 'Orbitron', sans-serif; color: #fff; text-shadow: 0 0 25px #8eaaff88; margin-top: 10px; overflow-wrap: anywhere; }
+.btn-coin-launch { background: var(--coin-color); color: #080b12; box-shadow: 0 0 24px #8eaaff44; }
+.btn-coin-reset { background: transparent; border: 1px solid var(--border); color: var(--text); }
+.btn-coin-launch:disabled { opacity: 0.4; cursor: wait; }
+.btn-coin-launch:focus-visible, .btn-coin-reset:focus-visible { outline: 2px solid #fff; outline-offset: 4px; }
+.tossing .coin-lift { animation: coin-launch 5.2s both; }
+.tossing .tech-coin { animation: coin-spin 5.2s both; }
+.tossing .coin-shadow { animation: coin-shadow 5.2s both; }
+.landed .coin-impact { animation: coin-impact 0.8s ease-out both; }
+.landed .coin-hardware { box-shadow: 0 0 60px #8eaaff77, inset 0 0 30px #8eaaff44; }
+@keyframes coin-launch {
+  0% { transform: translateY(0) scale(1); }
+  10% { transform: translateY(20px) scale(0.92); }
+  32% { transform: translateY(-65px) scale(1.12); }
+  70% { transform: translateY(-40px) scale(1.08); }
+  88% { transform: translateY(12px) scale(0.98); }
+  94% { transform: translateY(-8px) scale(1.02); }
+  100% { transform: translateY(0) scale(1); }
+}
+@keyframes coin-spin {
+  0% { transform: rotateY(0deg) rotateZ(0deg); }
+  12% { transform: rotateY(-180deg) rotateZ(-12deg); }
+  45% { transform: rotateY(1980deg) rotateZ(15deg); }
+  72% { transform: rotateY(3240deg) rotateZ(-8deg); }
+  90% { transform: rotateY(3580deg) rotateZ(4deg); }
+  96% { transform: rotateY(3610deg) rotateZ(-2deg); }
+  100% { transform: rotateY(3600deg) rotateZ(0deg); }
+}
+@keyframes coin-shadow {
+  0%, 100% { transform: scale(1); opacity: 0.8; }
+  35%, 70% { transform: scale(0.5); opacity: 0.25; }
+}
+@keyframes coin-impact {
+  from { transform: scale(1); opacity: 0.9; }
+  to { transform: scale(1.65); opacity: 0; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .tossing .coin-lift, .tossing .tech-coin, .tossing .coin-shadow,
+  .landed .coin-impact, .coin-result { animation: none; }
+}
